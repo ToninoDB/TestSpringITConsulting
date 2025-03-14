@@ -2,105 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Storico Prenotazioni</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f9f9f9;
-        color: #333;
-      }
-
-      h1 {
-        color: #444;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-
-      th,
-      td {
-        padding: 12px;
-        border: 1px solid #ccc;
-        text-align: center;
-      }
-
-      th {
-        background-color: #f4f4f4;
-        font-weight: bold;
-      }
-
-      tr:hover {
-        background-color: #f1f1f1;
-      }
-
-      .success {
-        color: green;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-
-      button {
-        background-color: #ff4d4d;
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        border-radius: 4px;
-      }
-
-      button:hover {
-        background-color: #cc0000;
-      }
-    </style>
   </head>
   <body>
     <h1>Storico Prenotazioni</h1>
 
-    <!-- ✅ Messaggio di successo -->
-    <div th:if="${successMessage}" class="success">
-      <p th:text="${successMessage}"></p>
-    </div>
-
-    <!-- ✅ Tabella per mostrare le prenotazioni -->
-    <table>
+    <table border="1">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Evento</th>
-          <th>Data Prenotazione</th>
-          <th>Numero Biglietti</th>
-          <th>Azioni</th>
+          <th>Data</th>
+          <th>Biglietti</th>
+          <th>Azione</th>
         </tr>
       </thead>
       <tbody>
-        <!-- ✅ Ciclo per mostrare tutte le prenotazioni -->
         <tr th:each="prenotazione : ${prenotazioni}">
-          <td th:text="${prenotazione.id}"></td>
           <td th:text="${prenotazione.evento.titolo}"></td>
           <td th:text="${prenotazione.dataPrenotazione}"></td>
           <td th:text="${prenotazione.numeroBiglietti}"></td>
           <td>
-            <!-- ✅ Form per eliminare la prenotazione -->
             <form
               th:action="@{'/prenotazioni/' + ${prenotazione.id}}"
               method="post"
-              style="display: inline"
             >
               <input type="hidden" name="_method" value="delete" />
-              <button
-                type="submit"
-                onclick="return confirm('Sei sicuro di voler cancellare questa prenotazione?')"
-              >
-                Elimina
-              </button>
+              <button type="submit">❌ Cancella</button>
             </form>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <a th:href="@{/prenotazioni/dashboard}" class="btn"
+      >🔙 Torna alla Dashboard</a
+    >
   </body>
 </html>

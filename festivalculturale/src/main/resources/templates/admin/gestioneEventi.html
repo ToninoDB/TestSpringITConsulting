@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Gestione Eventi</title>
+  </head>
+  <body>
+    <h1>Gestione Eventi</h1>
+
+    <a th:href="@{/admin/eventi/nuovo}">➕ Aggiungi Evento</a>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titolo</th>
+          <th>Data</th>
+          <th>Prezzo</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="evento : ${eventi}">
+          <td th:text="${evento.id}"></td>
+          <td th:text="${evento.titolo}"></td>
+          <td th:text="${evento.data}"></td>
+          <td th:text="${evento.prezzo} + ' €'"></td>
+          <td>
+            <a th:href="@{'/admin/eventi/modifica/' + ${evento.id}}"
+              >✏️ Modifica</a
+            >
+            <form
+              th:action="@{'/admin/eventi/elimina/' + ${evento.id}}"
+              method="post"
+              style="display: inline"
+            >
+              <button type="submit">❌ Elimina</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

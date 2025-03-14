@@ -19,8 +19,6 @@ import com.example.festivalculturale.services.UtenteService;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/prenotazioni")
@@ -108,6 +106,11 @@ public class PrenotazioneController {
                 List<Evento> listaEventi = eventoService.mostraTutti();
                 model.addAttribute("eventi", listaEventi);
                 return "eventi";
+        }
+
+        @GetMapping("/dashboard")
+        public String dashboardUtente() {
+                return "dashboardUtente";
         }
 
 }

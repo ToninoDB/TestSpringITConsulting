@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Dashboard Admin</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 400px;
+      }
+
+      h1 {
+        color: #444;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 12px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+      }
+
+      .btn:hover {
+        background-color: #45a049;
+      }
+
+      .btn-danger {
+        background-color: #e74c3c;
+      }
+
+      .btn-danger:hover {
+        background-color: #c0392b;
+      }
+
+      .logout-btn {
+        margin-top: 20px;
+        background-color: #3498db;
+      }
+
+      .logout-btn:hover {
+        background-color: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Dashboard Admin</h1>
+
+      <!-- ✅ Bottone per gestire eventi -->
+      <a th:href="@{/admin/gestione-eventi}" class="btn">📅 Gestione Eventi</a>
+
+      <!-- ✅ Bottone per gestire prenotazioni -->
+      <a th:href="@{/admin/gestione-prenotazioni}" class="btn"
+        >📄 Gestione Prenotazioni</a
+      >
+
+      <!-- ✅ Bottone per creare un nuovo evento -->
+      <a th:href="@{/admin/eventi/nuovo}" class="btn">➕ Crea Nuovo Evento</a>
+
+      <!-- ✅ Bottone di logout -->
+      <form th:action="@{/auth/logout}" method="post">
+        <button type="submit" class="btn logout-btn">🚪 Logout</button>
+      </form>
+    </div>
+  </body>
+</html>

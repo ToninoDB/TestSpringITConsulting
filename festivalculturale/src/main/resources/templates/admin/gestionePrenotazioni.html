@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Gestione Prenotazioni</title>
+  </head>
+  <body>
+    <h1>Gestione Prenotazioni</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID Prenotazione</th>
+          <th>Utente</th>
+          <th>Evento</th>
+          <th>Numero Biglietti</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="prenotazione : ${prenotazioni}">
+          <td th:text="${prenotazione.id}"></td>
+          <td th:text="${prenotazione.utente.email}"></td>
+          <td th:text="${prenotazione.evento.titolo}"></td>
+          <td th:text="${prenotazione.numeroBiglietti}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

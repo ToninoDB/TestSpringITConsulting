@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Form Evento</title>
+  </head>
+  <body>
+    <h1>Nuovo Evento</h1>
+
+    <form th:action="@{/admin/eventi}" method="post" th:object="${evento}">
+      <input type="hidden" th:field="*{id}" />
+      <label>Titolo:</label>
+      <input type="text" th:field="*{titolo}" required />
+
+      <label>Data:</label>
+      <input type="date" th:field="*{data}" required />
+
+      <label>Prezzo:</label>
+      <input type="number" th:field="*{prezzo}" required />
+
+      <button type="submit">Salva</button>
+    </form>
+  </body>
+</html>

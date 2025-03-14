@@ -1,54 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Lista Eventi</title>
+    <title>Eventi Disponibili</title>
   </head>
   <body>
-    <h1>Lista Eventi</h1>
-
-    <!-- ✅ Link per aggiungere un nuovo evento -->
-    <a th:href="@{/admin/eventi/nuovo}">+ Aggiungi Nuovo Evento</a>
+    <h1>Eventi Disponibili</h1>
 
     <table border="1">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Titolo</th>
+          <th>Descrizione</th>
           <th>Data</th>
           <th>Prezzo</th>
-          <th>Azioni</th>
+          <th>Azione</th>
         </tr>
       </thead>
       <tbody>
-        <!-- ✅ Iterazione sugli eventi -->
         <tr th:each="evento : ${eventi}">
-          <td th:text="${evento.id}"></td>
           <td th:text="${evento.titolo}"></td>
+          <td th:text="${evento.descrizione}"></td>
           <td th:text="${evento.data}"></td>
-          <td th:text="${evento.prezzo} + '€'"></td>
+          <td th:text="${evento.prezzo} + ' €'"></td>
           <td>
-            <!-- ✅ Modifica -->
-            <a th:href="@{'/admin/eventi/modifica/' + ${evento.id}}"
-              >Modifica</a
-            >
-
-            <!-- ✅ Eliminazione -->
-            <form
-              th:action="@{'/admin/eventi/elimina/' + ${evento.id}}"
-              method="post"
-              style="display: inline"
-            >
-              <input type="hidden" name="_method" value="delete" />
-              <button
-                type="submit"
-                onclick="return confirm('Sei sicuro di voler eliminare questo evento?')"
-              >
-                Elimina
-              </button>
-            </form>
+            <a th:href="@{'/prenotazioni/nuova/' + ${evento.id}}">📩 Prenota</a>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <a th:href="@{/prenotazioni/dashboard}" class="btn"
+      >🔙 Torna alla Dashboard</a
+    >
   </body>
 </html>

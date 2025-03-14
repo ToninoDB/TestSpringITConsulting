@@ -78,11 +78,11 @@ public class SecurityConfig {
                         .loginProcessingUrl("/auth/login")
                         .successHandler((request, response, authentication) -> {
                             // Controlla il ruolo e reindirizza
-                            String redirectUrl = "/prenotazioni/storico";
+                            String redirectUrl = "/prenotazioni/dashboard";
                             if (authentication.getAuthorities().stream()
                                     .anyMatch(
                                             grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
-                                redirectUrl = "/admin";
+                                redirectUrl = "/admin/dashboard";
                             }
                             response.sendRedirect(redirectUrl);
                         })

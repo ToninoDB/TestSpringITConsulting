@@ -16,7 +16,9 @@ import com.example.festivalculturale.services.EventoService;
 import com.example.festivalculturale.services.PrenotazioneService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -24,11 +26,11 @@ public class AdminController {
     private final EventoService eventoService;
     private final PrenotazioneService prenotazioneService;
 
-    @GetMapping("/eventi")
+    @GetMapping("/gestione-eventi")
     public String listaEventi(Model model) {
         List<Evento> eventi = eventoService.mostraTutti();
         model.addAttribute("eventi", eventi);
-        return "admin/eventi";
+        return "admin/gestioneEventi";
     }
 
     @GetMapping("/eventi/nuovo")
@@ -40,7 +42,7 @@ public class AdminController {
     @PostMapping("/eventi")
     public String creaEvento(@ModelAttribute Evento evento) {
         eventoService.salvaEvento(evento);
-        return "redirect:/admin/eventi";
+        return "redirect:/admin/gestione-eventi";
     }
 
     @GetMapping("/eventi/modifica/{id}")
@@ -54,19 +56,25 @@ public class AdminController {
     @PostMapping("/eventi/modifica/{id}")
     public String modificaEvento(@PathVariable Long id, @ModelAttribute Evento evento) {
         eventoService.aggiornaEvento(id, evento);
-        return "redirect:/admin/eventi";
+        return "redirect:/admin/gestione-eventi";
     }
 
     @PostMapping("/eventi/elimina/{id}")
     public String eliminaEvento(@PathVariable Long id) {
         eventoService.elimina(id);
-        return "redirect:/admin/eventi";
+        return "redirect:/admin/gestione-eventi";
     }
 
-    @GetMapping("/prenotazioni")
+    @GetMapping("/gestione-prenotazioni")
     public String listaPrenotazioni(Model model) {
         List<Prenotazione> prenotazioni = prenotazioneService.mostraTuttePrenotazioni();
         model.addAttribute("prenotazioni", prenotazioni);
-        return "admin/prenotazioni";
+        return "admin/gestionePrenotazioni";
     }
+
+    @GetMapping("/dashboard")
+    public String dashboardAdmin() {
+        return "admin/dashboardAdmin";
+    }
+
 }
