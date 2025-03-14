@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Lista Prenotazioni</title>
+  </head>
+  <body>
+    <h1>Lista Prenotazioni</h1>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Utente</th>
+          <th>Email</th>
+          <th>Evento</th>
+          <th>Data Prenotazione</th>
+          <th>Numero Biglietti</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ✅ Iterazione sulle prenotazioni -->
+        <tr th:each="prenotazione : ${prenotazioni}">
+          <td th:text="${prenotazione.id}"></td>
+          <td
+            th:text="${prenotazione.utente.nome} + ' ' + ${prenotazione.utente.cognome}"
+          ></td>
+          <td th:text="${prenotazione.utente.email}"></td>
+          <td th:text="${prenotazione.evento.titolo}"></td>
+          <td th:text="${prenotazione.dataPrenotazione}"></td>
+          <td th:text="${prenotazione.numeroBiglietti}"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ✅ Link per tornare alla dashboard -->
+    <a th:href="@{/admin/eventi}">Torna alla lista eventi</a>
+  </body>
+</html>

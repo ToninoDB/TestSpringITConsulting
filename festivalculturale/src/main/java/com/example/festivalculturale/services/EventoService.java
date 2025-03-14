@@ -1,5 +1,6 @@
 package com.example.festivalculturale.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,5 +72,20 @@ public class EventoService {
         Evento evento = eventoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Evento non trovato con ID: " + id));
         eventoRepository.delete(evento);
+    }
+
+    /**
+     * Cerca un evento per data
+     * 
+     * @param data
+     * @return
+     */
+    public List<Evento> cercaPerData(LocalDate data) {
+        return eventoRepository.findByData(data);
+    }
+
+    // Cerca un evento per range di prezzo
+    public List<Evento> cercaPerPrezzo(Double prezzoMin, Double prezzoMax) {
+        return eventoRepository.findByPrezzoBetween(prezzoMin, prezzoMax);
     }
 }

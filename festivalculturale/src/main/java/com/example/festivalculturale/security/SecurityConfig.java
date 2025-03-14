@@ -2,6 +2,7 @@ package com.example.festivalculturale.security;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,7 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.example.festivalculturale.models.Utente;
 import com.example.festivalculturale.repository.UtenteRepository;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -34,9 +35,10 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         return email -> {
             // Trova l'utente tramite il repository
-            Utente utente = utenteRepository.findByEmail(email);
+            Optional<Utente> appoggio = utenteRepository.findByEmail(email);
+            Utente utente = appoggio.get();
             if (utente == null) {
-                throw new EntityNotFoundException("Utente non trovato con email: " + email);
+                throw new UsernameNotFoundException("Utente non trovato con email: " + email);
             }
 
             // Converti il ruolo dell'utente in un'autorità di Spring Security
@@ -76,11 +78,11 @@ public class SecurityConfig {
                         .loginProcessingUrl("/auth/login")
                         .successHandler((request, response, authentication) -> {
                             // Controlla il ruolo e reindirizza
-                            String redirectUrl = "/dashboard";
+                            String redirectUrl = "/prenotazioni/storico";
                             if (authentication.getAuthorities().stream()
                                     .anyMatch(
                                             grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
-                                redirectUrl = "/admin/dashboard";
+                                redirectUrl = "/admin";
                             }
                             response.sendRedirect(redirectUrl);
                         })
