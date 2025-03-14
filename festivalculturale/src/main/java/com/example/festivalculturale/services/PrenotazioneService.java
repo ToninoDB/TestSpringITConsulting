@@ -26,7 +26,7 @@ public class PrenotazioneService {
      * @param utente
      * @return
      */
-    public List<Prenotazione> mostraStorico(Utente utente) {
+    public List<Prenotazione> mostraStoricoPrenotazioni(Utente utente) {
         return prenotazioneRepository.findByUtente(utente);
     }
 

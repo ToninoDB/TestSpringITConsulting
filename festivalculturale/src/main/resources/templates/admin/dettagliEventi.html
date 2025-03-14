@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:text="'Dettagli Evento - ' + ${evento.titolo}"></title>
+  </head>
+  <body>
+    <h1 th:text="${evento.titolo}"></h1>
+    <p th:text="'Descrizione: ' + ${evento.descrizione}"></p>
+    <p th:text="'Data: ' + ${evento.data}"></p>
+    <p th:text="'Orario: ' + ${evento.orario}"></p>
+    <p th:text="'Prezzo: €' + ${evento.prezzo}"></p>
+    <p
+      th:text="'Sede: ' + ${evento.sede.nome} + ' (' + ${evento.sede.capienza} + ' posti)'"
+    ></p>
+
+    <!-- Mostra valutazione media -->
+    <p
+      th:if="${valutazioneMedia > 0}"
+      th:text="'Valutazione media: ' + ${#numbers.formatDecimal(valutazioneMedia, 1, 1)} + ' ⭐'"
+    ></p>
+    <p
+      th:if="${valutazioneMedia == 0}"
+      th:text="'Nessuna valutazione disponibile'"
+    ></p>
+
+    <!-- Mostra biglietti venduti -->
+    <p th:text="'Biglietti venduti: ' + ${bigliettiVenduti}"></p>
+
+    <!-- Lista recensioni -->
+    <h2>Recensioni:</h2>
+    <ul>
+      <li th:each="recensione : ${evento.recensioni}">
+        <p
+          th:text="'⭐ ' + ${recensione.valutazione} + ' - ' + ${recensione.commento}"
+        ></p>
+        <p th:text="'Recensito da: ' + ${recensione.utente.nome}"></p>
+      </li>
+    </ul>
+
+    <!-- Pulsante per tornare alla lista -->
+    <a th:href="@{/admin/eventi}">⬅️ Torna alla lista eventi</a>
+  </body>
+</html>

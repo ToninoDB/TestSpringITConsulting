@@ -1,6 +1,7 @@
 package com.example.festivalculturale.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import com.example.festivalculturale.models.Evento;
 import com.example.festivalculturale.models.Prenotazione;
 import com.example.festivalculturale.services.EventoService;
 import com.example.festivalculturale.services.PrenotazioneService;
+import com.example.festivalculturale.services.RecensioneService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
     private final EventoService eventoService;
     private final PrenotazioneService prenotazioneService;
+    private final RecensioneService recensioneService;
 
     @GetMapping("/eventi")
     public String listaEventi(Model model) {
@@ -69,4 +72,26 @@ public class AdminController {
         model.addAttribute("prenotazioni", prenotazioni);
         return "admin/prenotazioni";
     }
+<<<<<<< Updated upstream
+=======
+
+    @GetMapping("/dashboard")
+    public String dashboardAdmin() {
+        return "admin/dashboardAdmin";
+    }
+
+    @GetMapping("/dettagli-evento")
+    public String getEventDetails(@PathVariable Long id, Model model) {
+        Optional<Evento> appoggio = eventoService.cercaPerId(id);
+        Evento evento = appoggio.get();
+        double valutazioneMedia = recensioneService.calcolaValutazioneMedia(evento);
+        int bigliettiVenduti = eventoService.numeroBigliettiVenduti(evento);
+
+        model.addAttribute("evento", evento);
+        model.addAttribute("valutazioneMedia", valutazioneMedia);
+        model.addAttribute("bigliettiVenduti", bigliettiVenduti);
+
+        return "admin/dettagliEventi";
+    }
+>>>>>>> Stashed changes
 }

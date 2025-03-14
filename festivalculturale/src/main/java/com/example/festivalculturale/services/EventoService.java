@@ -6,8 +6,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.festivalculturale.models.Artista;
 import com.example.festivalculturale.models.Evento;
+import com.example.festivalculturale.models.Sede;
 import com.example.festivalculturale.repository.EventoRepository;
+import com.example.festivalculturale.repository.PrenotazioneRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class EventoService {
 
     private final EventoRepository eventoRepository;
+    private final PrenotazioneRepository prenotazioneRepository;
 
     /**
      * @return la lista di tutti gli eventi presenti
@@ -75,7 +79,7 @@ public class EventoService {
     }
 
     /**
-     * Cerca un evento per data
+     * Cerca gli eventi per data
      * 
      * @param data
      * @return
@@ -84,8 +88,45 @@ public class EventoService {
         return eventoRepository.findByData(data);
     }
 
-    // Cerca un evento per range di prezzo
+    /**
+     * Cerca tutti gli eventi per range di prezzo
+     * 
+     * @param prezzoMin
+     * @param prezzoMax
+     * @return
+     */
     public List<Evento> cercaPerPrezzo(Double prezzoMin, Double prezzoMax) {
         return eventoRepository.findByPrezzoBetween(prezzoMin, prezzoMax);
+    }
+
+    /**
+     * Cerca tutti gli eventi a cui partecipa un artista
+     * 
+     * @param artista
+     * @return
+     */
+    public List<Evento> cercaPerArtista(Artista artista) {
+        return eventoRepository.findByArtistiContaining(artista);
+    }
+
+    /**
+     * Cerca gli eventi in una sede
+     * 
+     * @param sede
+     * @return
+     */
+    public Evento cercaPerSede(Sede sede) {
+        return eventoRepository.findBySede(sede);
+    }
+
+    /**
+     * Calcola il numero di bigletti venduti per un evento
+     * 
+     * @param evento
+     * @return
+     */
+    public int numeroBigliettiVenduti(Evento evento) {
+        Integer biglietti = prenotazioneRepository.getBigliettiTotali(evento);
+        return biglietti != null ? biglietti : 0;
     }
 }

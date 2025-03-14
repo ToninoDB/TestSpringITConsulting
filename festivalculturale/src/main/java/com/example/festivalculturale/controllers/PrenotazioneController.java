@@ -10,11 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.festivalculturale.models.Artista;
 import com.example.festivalculturale.models.Evento;
 import com.example.festivalculturale.models.Prenotazione;
+import com.example.festivalculturale.models.Recensione;
+import com.example.festivalculturale.models.Sede;
 import com.example.festivalculturale.models.Utente;
 import com.example.festivalculturale.services.EventoService;
 import com.example.festivalculturale.services.PrenotazioneService;
+import com.example.festivalculturale.services.RecensioneService;
 import com.example.festivalculturale.services.UtenteService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -30,6 +34,7 @@ public class PrenotazioneController {
         private final PrenotazioneService prenotazioneService;
         private final UtenteService utenteService;
         private final EventoService eventoService;
+        private final RecensioneService recensioneService;
 
         @GetMapping("/nuova/{eventoId}")
         public String mostraFormPrenotazione(@PathVariable Long eventoId, Model model) {
@@ -65,7 +70,7 @@ public class PrenotazioneController {
 
                 prenotazioneService.cancellaPrenotazione(prenotazioneId, utente);
 
-                List<Prenotazione> prenotazioni = prenotazioneService.mostraStorico(utente);
+                List<Prenotazione> prenotazioni = prenotazioneService.mostraStoricoPrenotazioni(utente);
                 model.addAttribute("prenotazioni", prenotazioni);
                 model.addAttribute("successMessage", "Prenotazione eliminata con successo!");
 
@@ -80,8 +85,19 @@ public class PrenotazioneController {
                                 .orElseThrow(() -> new EntityNotFoundException(
                                                 "Utente non trovato con email: " + userDetails.getUsername()));
 
-                List<Prenotazione> prenotazioni = prenotazioneService.mostraStorico(utente);
+                List<Prenotazione> prenotazioni = prenotazioneService.mostraStoricoPrenotazioni(utente);
                 model.addAttribute("prenotazioni", prenotazioni);
+
+                return "storico";
+        }
+
+        @GetMapping("/storico-recensioni")
+        public String getStoricoRecensioni(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+                Utente utente = utenteService.cercaPerEmail(userDetails.getUsername())
+                                .orElseThrow(() -> new EntityNotFoundException(
+                                                "Utente non trovato con email: " + userDetails.getUsername()));
+                List<Recensione> recensioni = recensioneService.mostraStoricoRecensioni(utente);
+                model.addAttribute("recensioni", recensioni);
 
                 return "storico";
         }
@@ -99,6 +115,20 @@ public class PrenotazioneController {
                         @RequestParam("prezzoMax") Double prezzoMax,
                         Model model) {
                 List<Evento> eventi = eventoService.cercaPerPrezzo(prezzoMin, prezzoMax);
+                model.addAttribute("eventi", eventi);
+                return "eventi";
+        }
+
+        @GetMapping("/ricerca/sede")
+        public String cercaPerSede(@RequestParam("sede") Sede sede, Model model) {
+                Evento evento = eventoService.cercaPerSede(sede);
+                model.addAttribute("evento", evento);
+                return "eventi";
+        }
+
+        @GetMapping("/ricerca/artisti")
+        public String cercaPerArtista(@RequestParam("artista") Artista artista, Model model) {
+                List<Evento> eventi = eventoService.cercaPerArtista(artista);
                 model.addAttribute("eventi", eventi);
                 return "eventi";
         }

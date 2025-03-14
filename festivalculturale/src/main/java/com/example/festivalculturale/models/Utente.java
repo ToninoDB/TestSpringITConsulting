@@ -39,4 +39,7 @@ public class Utente {
 
     @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL)
     private List<Prenotazione> prenotazioni;
+
+    @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL)
+    private List<Recensione> recensioni;
 }
